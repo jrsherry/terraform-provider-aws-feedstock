@@ -4,7 +4,7 @@
 {% set name = "terraform-provider-" + provider %}
 {% set x4_plugin = name + '_v' + version + "_x4" %}
 
-{% set sha256 = "5ee0e599647e36951a9cd0e9195368345499b31a4656368fc956535004a3ec73" %}
+{% set sha256 = "3f6cdc5e020ad4e6ad8d0587495a333bbb4e77d0854b6ce96b189e4ff5419743" %}
 {% set sha256_win64 = "8000cdebb8de3899a8c0116a5f8f46b781a84521e9715478db03128806614d0d" %}
 
 package:
