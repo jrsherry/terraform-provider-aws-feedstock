@@ -20,8 +20,7 @@ build:
   number: 0
   script:
     - pushd {{ pkg_src }}
-    - go build -v -o $GOBIN/{{ x4_plugin }} .  # [unix]
-    - go build -v -o %GOBIN%\{{ x4_plugin }} .  # [win]
+    - go build -v -o {{ os.sep.join(PREFIX,"bin", x4_plugin) }} .
 
 requirements:
   build:
