@@ -10,3 +10,7 @@ goarch:
 - amd64
 goos:
 - linux
+target_gobin:
+- ${PREFIX}/bin/
+target_goexe:
+- ''
