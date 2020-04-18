@@ -21,13 +21,13 @@ build:
   script:
     - pushd {{ pkg_src }}
     - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}
+  skip: True  # [not osx]
 
 requirements:
   build:
-    - {{ compiler('go') }} >=1.13,<1.15
+    - {{ compiler('go') }}
   run:
-    - terraform >=0.10  # [unix]
-    - terraform >=0.11.11  # [win]
+    - terraform >=0.12  # [unix]
 
 test:
   requires:
@@ -38,7 +38,7 @@ test:
     - terraform init
     # Tests that no plugins were downloaded
     - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json
-    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}
+    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}
 
 about:
   home: https://www.terraform.io
