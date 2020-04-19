@@ -35,8 +35,6 @@ jobs:
 
   - script: |
       source activate base
-      conda install -c defaults conda=4.7.5 --yes --quiet		
-      conda config --env --add pinned_packages conda=4.7.5
       conda install -n base -c conda-forge --quiet --yes conda-forge-ci-setup=2 conda-build
     displayName: 'Add conda-forge-ci-setup=2'
 
