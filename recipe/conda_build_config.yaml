@@ -1,10 +1,8 @@
-go_compiler:
-  - go-nocgo
-cgo_compiler:
-  - go-cgo
-goos:
-  - linux    # [linux]
-  - darwin   # [osx]
-  - windows  # [win]
-goarch:
-  - amd64
+go_cgo:
+  - 1.13
+go_nocgo:
+  - 1.13
+MACOSX_DEPLOYMENT_TARGET:  # [osx]
+  - '10.11'                # [osx]
+macos_min_version:         # [osx]
+  - '10.11'                # [osx]

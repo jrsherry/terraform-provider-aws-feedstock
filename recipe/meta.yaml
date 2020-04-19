@@ -1,34 +1,32 @@
 {% set provider = "aws" %}
 {% set goname = "github.com/terraform-providers/terraform-provider-"+provider.lower() %}
-{% set version = "2.30.0" %}
+{% set version = "2.57.0" %}
 
 {% set name = goname.split('/')[-1] %}
 {% set pkg_src = ('src/'+goname).replace("/",os.sep) %}
 
-{% set x4_plugin = name + '_v' + version + "_x4" + (".exe" if win else "")%}
+{% set x4_plugin = name + '_v' + version + "_x4"%}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  - folder:  {{ pkg_src }}
+  - folder: {{ pkg_src }}
     url: https://{{ goname }}/archive/v{{ version }}.tar.gz
-    sha256: 650160f5899d95bd3831f8ef45bc7db35ee56f8c777637e61dde6ff1616e976e
+    sha256: f547c81a48405f704ec78237c2ac6c4956f365f26bd1ea803dac3d707b809d6f
 
 build:
   number: 0
   script:
     - pushd {{ pkg_src }}
-    - go build -v -o $GOBIN/{{ x4_plugin }} .  # [unix]
-    - go build -v -o %GOBIN%\{{ x4_plugin }} .  # [win]
+    - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}
 
 requirements:
   build:
-    - {{ compiler('go') }} >=1.11.3
+    - {{ compiler('go') }}
   run:
-    - terraform >=0.10  # [unix]
-    - terraform >=0.11.11  # [win]
+    - terraform >=0.12
 
 test:
   requires:
@@ -38,8 +36,8 @@ test:
     - bash -euf -c "echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf"
     - terraform init
     # Tests that no plugins were downloaded
-    - test -f .terraform/plugins/{{ goos }}_{{ goarch }}/lock.json
-    - test ! -f .terraform/plugins/{{ goos }}_{{ goarch }}/{{ x4_plugin }}
+    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json
+    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}
 
 about:
   home: https://www.terraform.io
