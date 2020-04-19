@@ -1,6 +1,6 @@
-go-cgo:
+go_cgo:
   - 1.13
-go-nocgo:
+go_nocgo:
   - 1.13
 MACOSX_DEPLOYMENT_TARGET:  # [osx]
   - '10.11'                # [osx]
