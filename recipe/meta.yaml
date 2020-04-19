@@ -21,7 +21,6 @@ build:
   script:
     - pushd {{ pkg_src }}
     - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}
-  skip: True  # [not osx]
 
 requirements:
   build:
