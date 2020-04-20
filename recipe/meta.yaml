@@ -21,7 +21,7 @@ build:
 
 requirements:
   build:
-    - {{ compiler('go') }}
+    - {{ compiler('go') }} 1.13
   run:
     - terraform >=0.12,<0.13
 
