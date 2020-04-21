@@ -3,7 +3,6 @@
 {% set version = "2.58.0" %}
 
 {% set name = goname.split('/')[-1] %}
-{% set pkg_src = ('src/'+goname).replace("/",os.sep) %}
 
 {% set x4_plugin = name + '_v' + version + "_x4"%}
 
@@ -12,32 +11,36 @@ package:
   version: {{ version }}
 
 source:
-  - folder: {{ pkg_src }}
-    url: https://{{ goname }}/archive/v{{ version }}.tar.gz
-    sha256: 9eea09b7d74e8944d87d45d385a935b01c180fca65d52c6d2db6253711db998e
+  url: https://{{ goname }}/archive/v{{ version }}.tar.gz
+  sha256: 9eea09b7d74e8944d87d45d385a935b01c180fca65d52c6d2db6253711db998e
 
 build:
   number: 0
   script:
-    - pushd {{ pkg_src }}
     - go build -v -o {{ target_gobin }}{{ x4_plugin }}{{ target_goexe }}
 
 requirements:
   build:
-    - {{ compiler('go') }}
+    - {{ compiler('go') }} 1.13
   run:
-    - terraform >=0.12
+    - terraform 0.12
 
 test:
-  requires:
-    - m2-bash       # [win]
-    - m2-coreutils  # [win]
   commands:
-    - bash -euf -c "echo 'provider \"{{ provider|lower }}\" { version=\"{{ version }}\" }' > init.tf"
+    # Create a sample init.tf loading the provider
+    - echo 'provider "{{ provider|lower }}" { version="{{ version }}" }' > init.tf  # [unix]
+    - echo provider "{{ provider|lower }}" { version="{{ version }}" } > init.tf    # [win]
+
+    # Initialize
     - terraform init
-    # Tests that no plugins were downloaded
-    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json
-    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}
+
+    # Tests that init was successful
+    - test -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/lock.json              # [unix]
+    - if not exist .terraform\plugins\{{ target_goos }}_{{ target_goarch }}\lock.json exit 1  # [win]
+
+    # Test that the provider was not downloaded
+    - test ! -f .terraform/plugins/{{ target_goos }}_{{ target_goarch }}/{{ x4_plugin }}{{ target_goexe }}        # [unix]
+    - if exist .terraform\plugins\{{ target_goos }}_{{ target_goarch }}\{{ x4_plugin }}{{ target_goexe }} exit 1  # [win]
 
 about:
   home: https://www.terraform.io
