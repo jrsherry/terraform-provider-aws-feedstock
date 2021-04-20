@@ -73,6 +73,7 @@ Installing `terraform-provider-aws` from the `conda-forge` channel can be achiev
 
 ```
 conda config --add channels conda-forge
+conda config --set channel_priority strict
 ```
 
 Once the `conda-forge` channel has been enabled, `terraform-provider-aws` can be installed with:
