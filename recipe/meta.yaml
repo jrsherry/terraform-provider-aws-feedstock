@@ -1,5 +1,5 @@
 {% set provider = "aws" %}
-{% set goname = "github.com/terraform-providers/terraform-provider-"+provider.lower() %}
+{% set goname = "github.com/hashicorp/terraform-provider-"+provider.lower() %}
 {% set version = "3.35.0" %}
 
 {% set name = goname.split('/')[-1] %}
@@ -21,7 +21,7 @@ build:
 
 requirements:
   build:
-    - {{ compiler('go') }} 1.13
+    - {{ compiler('go') }} 1.16
   run:
     - terraform 0.12
 
